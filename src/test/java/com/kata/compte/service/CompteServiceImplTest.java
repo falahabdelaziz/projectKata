@@ -171,6 +171,53 @@ public class CompteServiceImplTest {
 
     }
 
+    // test la methode du  depot de compte
+    @Test
+    public void faitOperation_depot() {
+        RequestCptDto request = new RequestCptDto();
+        request.setNumeroCompte("1234567890875");
+        request.setCodeSwift("CNEPFR22");
+        request.setIdentidiantRC("12345678");
+        request.setMontant(BigDecimal.valueOf(100));
+        request.setTypeOperation("depotCpt");
+        CompteEntity compte = new CompteEntity();
+        compte.setId(1L);
+        compte.setSoldeDisponible(BigDecimal.valueOf(20000));
+//When
+        lenient().when(compteRepository.findByNumeroCompteAndSwiftBanqueAndIdentifiantClient(request.getNumeroCompte(), request.getCodeSwift(), request.getIdentidiantRC())).thenReturn(compte);
 
+         BigDecimal newSolde = compte.getSoldeDisponible().add(request.getMontant());
+        CompteEntity updateCompte = compte;
+        updateCompte.setSoldeDisponible(newSolde);
+        updateCompte.setSoldeTempsReel(newSolde);
+        lenient().when(compteRepository.saveAndFlush(ArgumentMatchers.any(CompteEntity.class))).thenReturn(updateCompte);
+        MatcherAssert.assertThat(updateCompte, is(compte));
+        MatcherAssert.assertThat(updateCompte.getSoldeDisponible(), is(compte.getSoldeDisponible()));
+
+    }
+
+    @Test
+    public void faitOperation_retrait() {
+        RequestCptDto request = new RequestCptDto();
+        request.setNumeroCompte("1234567890875");
+        request.setCodeSwift("CNEPFR22");
+        request.setIdentidiantRC("12345678");
+        request.setMontant(BigDecimal.valueOf(100));
+        request.setTypeOperation("retraitCpt");
+        CompteEntity compte = new CompteEntity();
+        compte.setId(1L);
+        compte.setSoldeDisponible(BigDecimal.valueOf(20000));
+//When
+        lenient().when(compteRepository.findByNumeroCompteAndSwiftBanqueAndIdentifiantClient(request.getNumeroCompte(), request.getCodeSwift(), request.getIdentidiantRC())).thenReturn(compte);
+
+        BigDecimal newSolde = compte.getSoldeDisponible().add(request.getMontant());
+        CompteEntity updateCompte = compte;
+        updateCompte.setSoldeDisponible(newSolde);
+        updateCompte.setSoldeTempsReel(newSolde);
+        lenient().when(compteRepository.saveAndFlush(ArgumentMatchers.any(CompteEntity.class))).thenReturn(updateCompte);
+        MatcherAssert.assertThat(updateCompte, is(compte));
+        MatcherAssert.assertThat(updateCompte.getSoldeDisponible(), is(compte.getSoldeDisponible()));
+
+    }
 
 }

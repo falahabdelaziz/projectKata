@@ -33,10 +33,35 @@ public interface CompteService {
      * @param request
      * @return
      */
+    /**
+     *  US 2:
+     *
+     * In order to retrieve some or all of my savings
+     *
+     * As a bank client
+     *
+     * I want to make a withdrawal from my account
+     * @param request
+     * @return
+     */
+    CompteEntity faitOperation(RequestCptDto request);
+
+    /**
+     * US 1:
+     *
+     * In order to save money
+     *
+     * As a bank client
+     *
+     * I want to make a deposit in my account
+     * @param request
+     * @return
+     */
+    @Deprecated
     CompteEntity depotCompte(RequestCptDto request);
 
     /**
-     *  US 2:
+     * US 2:
      *
      * In order to retrieve some or all of my savings
      *
@@ -46,5 +71,6 @@ public interface CompteService {
      * @param requestCptDto
      * @return
      */
+     @Deprecated
     CompteEntity retraitCompte(RequestCptDto requestCptDto);
 }

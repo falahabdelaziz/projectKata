@@ -31,14 +31,12 @@ public class CompteController {
     }
 
     // la methode faitOperation qui permette de faire une operation . <<depot ou bien retrait>>
-    @PostMapping(value = "/fait-operation", produces = {"application/json; charset=UTF-8"})
+    @GetMapping(value = "/fait-operation", produces = {"application/json; charset=UTF-8"})
     @ResponseBody
     public CompteEntity faitOperation(@RequestBody RequestCptDto request) {
-        if ("depotCpt".equals(request.getTypeOperation())) {
-            return compteService.depotCompte(request);
-        } else {
-            return compteService.retraitCompte(request);
-        }
+
+            return compteService.faitOperation(request);
+
 
     }
 
