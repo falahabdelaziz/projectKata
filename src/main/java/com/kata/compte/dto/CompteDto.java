@@ -11,50 +11,50 @@ import java.util.Date;
 public class CompteDto {
 
     // id unique
-    Long id;
+    private Long id;
     //numero de compte
-    String numeroCompte;
+    private String numeroCompte;
     // institulé de compte
 
-    String intitule;
+    private String intitule;
     // code de la banque  par exemple 00034
-    String codeBanque;
+    private String codeBanque;
     // code de l'agence
-    String codeAgence;
+    private String codeAgence;
     // statut : ouvert, cloture,
-    String statut;
+    private String statut;
     //est ce que le compte est active ou descative
-    Boolean compteActive;
+    private Boolean compteActive;
     // date d'ouverture
-    Date dateOuverture;
+    private Date dateOuverture;
     // date de  fermeture un compte
-    Date dateFermeture;
+    private Date dateFermeture;
     // le motif de cloture
-    String motifClotureCompte;
+    private String motifClotureCompte;
     // devise de compte
-    String devise;
+    private String devise;
     // solde en temps reel
-    BigDecimal soldeTempsReel;
+    private BigDecimal soldeTempsReel;
     //solde disponible
-    BigDecimal soldeDisponible;
+    private BigDecimal soldeDisponible;
     //le type de compte : compte courant ,compte epargne
-    String typeCompte;
+    private String typeCompte;
     // le pays
-    String pays;
+    private String pays;
     //la ville
-    String ville;
+    private String ville;
     // code postale
-    String codePostal;
+    private String codePostal;
     //adresse
-    String adresse;
+    private String adresse;
     //telephone
-    String telephone;
-    String balance;
-    String utilisateurAyantCloture;
+    private String telephone;
+    private String balance;
+    private String utilisateurAyantCloture;
     // User (Utilisateur qu'utilise l'application (agent de la banque  )
-    String utilisateurAyantCree;
+    private String utilisateurAyantCree;
     // Banque du client qui a ouvert le compte
-    String  swiftBanque;
+    private String  swiftBanque;
 
     public CompteDto() {
     }

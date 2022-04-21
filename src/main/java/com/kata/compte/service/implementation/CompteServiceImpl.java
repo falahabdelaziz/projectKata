@@ -1,12 +1,17 @@
 package com.kata.compte.service.implementation;
 
+import com.kata.compte.controller.OperationController;
 import com.kata.compte.dto.CompteDto;
 import com.kata.compte.dto.RequestCptDto;
 import com.kata.compte.entity.CompteEntity;
 import com.kata.compte.entity.OperationEntity;
+import com.kata.compte.enumeration.TypeOperationEnum;
+import com.kata.compte.mapper.CompteMapper;
 import com.kata.compte.repository.CompteRepository;
 import com.kata.compte.repository.OperationsRepository;
 import com.kata.compte.service.CompteService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +19,7 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CompteServiceImpl implements CompteService {
@@ -22,16 +28,12 @@ public class CompteServiceImpl implements CompteService {
     private CompteRepository compteRepository;
     @Autowired
     private OperationsRepository operationsRepository;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CompteServiceImpl.class);
     @Override
     public CompteEntity createCompte(CompteDto compteDto) {
-          CompteEntity compteEntity = new  CompteEntity();
-        compteEntity.setNumeroCompte(compteDto.getNumeroCompte());
-        compteEntity.setTypeCompte(compteDto.getTypeCompte());
-        compteEntity.setSoldeDisponible(compteDto.getSoldeDisponible());
-        compteEntity.setSoldeTempsReel(compteDto.getSoldeDisponible());
-        compteEntity.setDevise(compteDto.getDevise());
-
-
+        LOGGER.info(String.format("------------------La Creation d'un compte en cours %1$s", compteDto.getNumeroCompte()));
+        CompteEntity compteEntity = CompteMapper.INSTANCE.dtoToEntity(compteDto);
         return compteRepository.save(compteEntity);
     }
 
@@ -39,13 +41,18 @@ public class CompteServiceImpl implements CompteService {
     @Override
     public List<CompteEntity> getAllComptes()
     {
+
+        LOGGER.info(String.format("------------------La liste des comptes"));
+
         return compteRepository.findAll();
+
     }
 
 
 
     @Override
     public Optional<CompteEntity>  getCompteByNumCptAndCodeSwiftAndClient(String numeroCompte, String codeSwift, String identifiantClient) {
+        LOGGER.info(String.format("------------------recuperer un compte par num et swift,client"));
         return Optional.ofNullable(compteRepository.findByNumeroCompteAndSwiftBanqueAndIdentifiantClient(numeroCompte, codeSwift, identifiantClient));
     }
 
@@ -55,10 +62,15 @@ public class CompteServiceImpl implements CompteService {
         if(compte.isPresent()){
             CompteEntity updateCompte =compte.get();
             BigDecimal newSolde ;
-            if("depotCpt".equals(request.getTypeOperation())){
+            LOGGER.info(String.format("------------------debut d'operation----------"));
+
+            if(TypeOperationEnum.DEPOT.getCode().equals(request.getTypeOperation())){
+                LOGGER.info(String.format("------------------depot---------"));
                 newSolde =updateCompte.getSoldeDisponible().add(request.getMontant());
             }else{
+                LOGGER.info(String.format("------------------retrait---------"));
                  newSolde =updateCompte.getSoldeDisponible().subtract(request.getMontant());
+
             }
             updateCompte.setSoldeDisponible(newSolde);
             updateCompte.setSoldeTempsReel(newSolde);

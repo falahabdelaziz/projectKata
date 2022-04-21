@@ -14,6 +14,7 @@ public class OperationServiceImpl implements OperationService {
      private OperationsRepository operationsRepository;
     @Override
     public List<OperationEntity> getAllOperations() {
+
         return operationsRepository.findAll();
     }
 }
